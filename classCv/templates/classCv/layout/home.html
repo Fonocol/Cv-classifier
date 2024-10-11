@@ -21,12 +21,12 @@
             </form>
 
             <!-- Predicted Category Display -->
-            {% if category_name %}
+           
             <div class="result">
                 <h3>Predicted Category:</h3>
                 <p>{{ category_name }}</p>
             </div>
-            {% endif %}
+            
         </div>
 
         <!-- Text Input Section -->
@@ -48,7 +48,7 @@
 <script>
     // Gestion du formulaire de téléchargement de fichier
     document.getElementById('upload-form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Empêche le rechargement de la page
+        event.preventDefault(); // Empeche le rechargement de la page
 
         let formData = new FormData(this);
 
