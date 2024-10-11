@@ -8,6 +8,7 @@ cryptography==43.0.1
 Django==5.1.2
 filelock==3.16.1
 fsspec==2024.9.0
+gunicorn==22.0.0
 huggingface-hub==0.25.2
 idna==3.10
 Jinja2==3.1.4
