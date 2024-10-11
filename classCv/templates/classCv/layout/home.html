@@ -1,0 +1,102 @@
+<!-- classCv/templates/classCv/layout/home.html -->
+
+{% extends "header.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="upload-and-text">
+        <!-- Upload Section -->
+        <div class="upload-section">
+            <h2>Upload a File</h2>
+            <p>Please note: The uploaded content must be in English.</p>
+            <form id="upload-form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.resume.label_tag }}
+                {{ form.resume }}
+                {{ form.resume.help_text }}
+                <button type="submit" class="btn-upload">Upload</button>
+            </form>
+
+            <!-- Predicted Category Display -->
+            {% if category_name %}
+            <div class="result">
+                <h3>Predicted Category:</h3>
+                <p>{{ category_name }}</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Text Input Section -->
+        <div class="text-section">
+            <h2>Enter Text</h2>
+            <p>Please note: The text entered must be in English.</p>
+            <form id="text-form" method="POST">
+                {% csrf_token %}
+                {{ form.text.label_tag }}
+                {{ form.text }}
+                <button type="submit" class="btn-submit">Predict</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // Gestion du formulaire de téléchargement de fichier
+    document.getElementById('upload-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+
+        let formData = new FormData(this);
+
+        fetch("{% url 'getHome' %}", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                document.getElementById('id_text').value = data.text_content;
+                document.querySelector('.result').innerHTML = `
+                    <h3>Catégorie Prédite :</h3>
+                    <p>${data.category_name}</p>
+                `;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Gestion du formulaire de saisie de texte
+    document.getElementById('text-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêche le rechargement de la page
+
+        let formData = new FormData(this);
+
+        fetch("{% url 'getHome' %}", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                document.querySelector('.result').innerHTML = `
+                    <h3>Catégorie Prédite :</h3>
+                    <p>${data.category_name}</p>
+                `;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+{% endblock %}

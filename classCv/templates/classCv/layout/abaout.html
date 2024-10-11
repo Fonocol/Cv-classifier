@@ -1,0 +1,41 @@
+{% extends "header.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1>About This Project</h1>
+    <p>
+        Welcome to the <strong>NLP Resume Classifier</strong>! This project is designed to analyze and classify resumes based on their content. 
+        Using machine learning techniques and natural language processing (NLP), the system predicts the category or field of a resume or text entered by the user.
+    </p>
+
+    <h2>How It Works</h2>
+    <p>
+        The system allows users to either upload a resume file (in PDF or TXT format) or manually enter text. Once submitted, the content is processed using NLP models
+        to predict the career field, such as <em>Information Technology</em>, <em>Healthcare</em>, <em>Engineering</em>, and more.
+    </p>
+
+    <h2>Technologies Used</h2>
+    <ul>
+        <li><strong>Python</strong> - for the backend logic</li>
+        <li><strong>Django</strong> - for the web framework</li>
+        <li><strong>Natural Language Processing (NLP)</strong> - to analyze text content</li>
+        <li><strong>Machine Learning (KNN Classifier)</strong> - to predict job categories</li>
+        <li><strong>PDFMiner</strong> - for extracting text from PDF files</li>
+    </ul>
+
+    <h2>Purpose</h2>
+    <p>
+        The primary goal of this project is to demonstrate the capabilities of NLP and machine learning in analyzing unstructured text data, such as resumes. 
+        By automating resume classification, the system can help HR professionals, job seekers, and others gain insights into career paths or improve the recruitment process.
+    </p>
+    
+    <h2>About the Developer</h2>
+    <p>
+        This project was developed by FONO Colince a passionate software engineering student, leveraging cutting-edge technologies to explore new possibilities in data science and artificial intelligence.
+    </p>
+</div>
+{% endblock %}
+

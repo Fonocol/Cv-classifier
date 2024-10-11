@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* Fichier CSS : static/css/style.css */
+
+/* static/css/style.css */
+
+/* static/css/style.css */
+
+/* Variables CSS */
+:root {
+    /* Palette de couleurs */
+    --dark-blue: #2c3e50;
+    --medium-blue: #3498db;
+    --light-blue: #5dade2;
+    --green: #16a085;
+    --gray: #7e7e7e;
+    --gray-light: #ecf0f1;
+    --white: #ffffff;
+
+    /* Tailles de police */
+    --font-size-base: 1rem;
+    --font-size-md: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
+    --font-size-lg: clamp(1.56rem, 1vw + 1.31rem, 2.11rem);
+    --font-size-xl: clamp(2.44rem, 2.38vw + 1.85rem, 3.75rem);
+
+    /* Rayon des bordures */
+    --border-radius: 10px;
+
+    /* Boutons */
+    --btn-primary: var(--medium-blue);
+    --btn-primary-hover: var(--light-blue);
+    --btn-secondary: var(--green);
+    --btn-secondary-hover: darken(var(--green), 10%);
+}
+
+/* Style global */
+body {
+    font-family: 'Arial', sans-serif;
+    color: var(--dark-blue);
+    background-color: var(--gray-light);
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    padding: 2.5rem 0;
+    background-color: var(--dark-blue);
+    border-bottom: 1px solid var(--gray-light);
+    margin-bottom: 1.5rem;
+}
+
+header .text-center {
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--white);
+}
+
+header p.lead {
+    font-size: 1.25rem;
+    color: var(--gray);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Layout pour upload et text */
+.upload-and-text {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.upload-section, .text-section {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 300px;
+}
+
+.upload-section h2, .text-section h2 {
+    color: var(--medium-blue);
+    margin-bottom: 15px;
+}
+
+.upload-section form, .text-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-section input[type="file"], .text-section textarea {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-base);
+}
+
+.upload-section .btn-upload, .text-section .btn-submit {
+    padding: 10px 20px;
+    background-color: var(--btn-primary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: var(--font-size-base);
+}
+
+.upload-section .btn-upload:hover, .text-section .btn-submit:hover {
+    background-color: var(--btn-primary-hover);
+}
+
+/* Résultat de la prédiction */
+.result {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.result h3 {
+    font-size: 1.5rem;
+    color: var(--medium-blue);
+    margin-bottom: 10px;
+}
+
+.result p {
+    font-size: var(--font-size-lg);
+    color: var(--green);
+}
+
+/* Pied de page (footer) */
+.footer {
+    width: 100%;
+    padding: 1em 0;
+    background-color: var(--dark-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 40px; /* Espace au-dessus du footer */
+}
+
+.footer-links {
+    margin-bottom: 1em;
+    display: flex;
+    gap: 1em;
+}
+
+.footer-links a {
+    color: var(--medium-blue);
+    text-decoration: none;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-links a:hover {
+    color: var(--white);
+}
+
+.signature {
+    font-size: 1em;
+    opacity: 0.7;
+    color: var(--white);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 2rem 0;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    header p.lead {
+        font-size: 1rem;
+    }
+
+    .footer-links a {
+        font-size: 1.3em;
+    }
+
+    .signature {
+        font-size: 0.9em;
+    }
+
+    .upload-and-text {
+        flex-direction: column;
+    }
+
+    .upload-section, .text-section {
+        width: 100%;
+    }
+
+    .result h3 {
+        font-size: 1.25rem;
+    }
+
+    .result p {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.75rem;
+    }
+
+    header p.lead {
+        font-size: 0.95rem;
+    }
+
+    .footer-links a {
+        font-size: 1.1em;
+    }
+
+    .signature {
+        font-size: 0.75rem;
+    }
+
+    .upload-section h2, .text-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .result h3 {
+        font-size: 1.2rem;
+    }
+
+    .result p {
+        font-size: 0.95rem;
+    }
+}
