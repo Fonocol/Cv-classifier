@@ -10,6 +10,12 @@ import re
 import nltk
 from pdfminer.high_level import extract_text
 
+#from .utils import predict_sentiment
+from transformers import pipeline
+
+# Charger le modèle Hugging Face pour la classification des sentiments
+sentiment_analyzer = pipeline('sentiment-analysis')
+
 # Télécharger les ressources NLTK si nécessaire
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -123,3 +129,39 @@ def clean_text(text):
 
 def about(request):
     return render(request, 'classCv/layout/abaout.html')
+
+
+from django.http import JsonResponse
+from django.shortcuts import render
+from transformers import pipeline
+
+# Charger le modèle Hugging Face pour la classification des sentiments
+sentiment_analyzer = pipeline('sentiment-analysis')
+
+def comment_view(request):
+    if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        user_comment = request.POST.get('comment', '').strip()
+        if user_comment:
+            # Prédiction de sentiment avec Hugging Face Transformers
+            prediction = sentiment_analyzer(user_comment)[0]
+            label = prediction['label']
+            score = prediction['score']
+
+            # Reformater la réponse selon le sentiment détecté
+            sentiment = "positif" if label == "POSITIVE" else "négatif"
+
+            # Retourner une réponse JSON
+            return JsonResponse({
+                'success': True,
+                'message': f"Votre message '{user_comment}' est {sentiment} avec un score de confiance de {score:.2f}."
+            })
+    else:
+        return JsonResponse({
+            'success': False,
+            'error': 'Invalid request'
+        }, status=400)
+
+def comment_page(request):
+    # Simple page rendering
+    return render(request, 'classCv/layout/comment.html')
+
