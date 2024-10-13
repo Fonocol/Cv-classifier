@@ -11,10 +11,10 @@ import nltk
 from pdfminer.high_level import extract_text
 
 #from .utils import predict_sentiment
-from transformers import pipeline
+#from transformers import pipeline
 
 # Charger le modèle Hugging Face pour la classification des sentiments
-sentiment_analyzer = pipeline('sentiment-analysis')
+#sentiment_analyzer = pipeline('sentiment-analysis')
 
 # Télécharger les ressources NLTK si nécessaire
 nltk.download('punkt')
@@ -131,14 +131,8 @@ def about(request):
     return render(request, 'classCv/layout/abaout.html')
 
 
-from django.http import JsonResponse
-from django.shortcuts import render
-from transformers import pipeline
 
-# Charger le modèle Hugging Face pour la classification des sentiments
-sentiment_analyzer = pipeline('sentiment-analysis')
-
-def comment_view(request):
+def comment_view2(request):
     if request.method == "POST" and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         user_comment = request.POST.get('comment', '').strip()
         if user_comment:
@@ -163,5 +157,24 @@ def comment_view(request):
 
 def comment_page(request):
     # Simple page rendering
+    return render(request, 'classCv/layout/comment.html')
+
+def comment_view(request):
+    if request.method == "POST":
+        user_comment = request.POST.get('comment')
+        
+        # Simple analyse de sentiment basé sur des mots
+        positive_keywords = ['good', 'happy', 'love', 'great', 'excellent', 'proud', 'amazing', 'awesome']
+        negative_keywords = ['bad', 'sad', 'angry', 'terrible', 'horrible', 'hate']
+
+        if any(word in user_comment.lower() for word in positive_keywords):
+            response = "Your comment is positive!"
+        elif any(word in user_comment.lower() for word in negative_keywords):
+            response = "Your comment is negative!"
+        else:
+            response = "Your comment is neutral."
+
+        return JsonResponse({'success': True, 'response': response})
+    
     return render(request, 'classCv/layout/comment.html')
 

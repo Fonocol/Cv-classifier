@@ -1,100 +1,116 @@
+<!-- classCv/templates/classCv/comments.html -->
 
 {% extends "header.html" %}
-{% load static %}
+
 
 {% block content %}
-<div class="cont">
-    <h2>Analyse de Sentiment des Commentaires</h2>
+<div class="comment-section">
+    <h2>Enter your comment</h2>
+    <form id="comment-form" method="POST" class="comment-form">
+        {% csrf_token %}
+        <textarea name="comment" id="comment" rows="4" placeholder="Write your comment here..." required></textarea><br>
+        <button type="submit" class="btn-submit">Submit</button>
+    </form>
 
-    <div class="comment-section">
-        <form id="comment-form" method="POST">
-            {% csrf_token %}
-            <label for="comment">Entrez votre commentaire :</label>
-            <textarea id="comment" name="comment" rows="4" placeholder="Tapez votre commentaire ici..."></textarea>
-            <button type="submit" class="btn-submit">Envoyer</button>
-        </form>
-    </div>
-
-    <div class="result" id="result-section" style="display: none;">
-        <h3>Résultat de l'analyse :</h3>
-        <p id="result-message"></p>
+    <div id="response-section" style="margin-top: 20px; display:none;">
+        <p id="user-comment"><strong>Your message: </strong></p>
+        <p id="sentiment-response"></p>
     </div>
 </div>
 
-<!-- Style (CSS) -->
+<!-- CSS Style -->
 <style>
-    .cont {
-        max-width: 800px;
+    .comment-section {
+        width: 60%;
         margin: 50px auto;
-        padding: 20px;
         background-color: #f9f9f9;
         border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
     }
 
-    h2 {
-        text-align: center;
-        color: #333;
-    }
-
-    .comment-section {
-        margin: 20px 0;
-    }
-
-    textarea {
+    .comment-form textarea {
         width: 100%;
         padding: 10px;
+        border-radius: 5px;
         border: 1px solid #ccc;
-        border-radius: 4px;
-        resize: none;
+        font-size: 16px;
         margin-bottom: 10px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .btn-submit {
-        display: inline-block;
-        padding: 10px 20px;
         background-color: #4CAF50;
         color: white;
         border: none;
-        border-radius: 4px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
         cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     .btn-submit:hover {
         background-color: #45a049;
     }
 
-    .result {
+    #response-section {
         margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #e7f3fe;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
-    #result-message {
+    #sentiment-response {
         font-size: 18px;
-        color: #333;
+        font-weight: bold;
+    }
+
+    #sentiment-response.positive {
+        color: #4CAF50;
+    }
+
+    #sentiment-response.negative {
+        color: #F44336;
+    }
+
+    #sentiment-response.neutral {
+        color: #FF9800;
     }
 </style>
 
+<!-- JavaScript -->
 <script>
     document.getElementById('comment-form').addEventListener('submit', function(event) {
         event.preventDefault(); // Empêche le rechargement de la page
 
-        let formData = new FormData(this);
+        let comment = document.getElementById('comment').value;
 
+        // Envoie de la requête POST via fetch
         fetch("{% url 'comments' %}", {
             method: 'POST',
             headers: {
-                'X-Requested-With': 'XMLHttpRequest', // Assure que la requête est détectée comme Ajax
+                'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: formData
+            body: 'comment=' + encodeURIComponent(comment)
         })
         .then(response => response.json())
         .then(data => {
-            if(data.success) {
-                document.getElementById('result-message').innerText = data.message;
-                document.getElementById('result-section').style.display = 'block';
-            } else {
-                console.error(data.error);
+            if (data.success) {
+                // Affiche la réponse sur la page
+                document.getElementById('user-comment').innerHTML = `<strong>Your message: </strong> "${comment}"`;
+                document.getElementById('sentiment-response').innerText = data.response;
+
+                // Ajoute une classe pour colorer le texte selon le sentiment
+                let sentimentClass = data.response.includes('positive') ? 'positive' :
+                                     data.response.includes('negative') ? 'negative' : 'neutral';
+
+                document.getElementById('sentiment-response').className = sentimentClass;
+                document.getElementById('response-section').style.display = 'block';
             }
         })
         .catch(error => console.error('Error:', error));
